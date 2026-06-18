@@ -7,8 +7,7 @@ def calculate_average(grades: list[int|float]) -> float:
 
 
 def get_status(average_grade: float) -> str:
-    status = ["Успешный", "Отстающий"]
-    return status[0] if average_grade >= 75 else status[1]
+    return "Успешный" if average_grade >= 75 else "Отстающий"
 
 
 def update_average_grade(students: list[dict]) -> None:
@@ -66,17 +65,17 @@ def delete_worst_student(students: list[dict]) -> None:
         print("Студенты в списке отсутствуют.")
         return
 
-    average_grades = []
-    for student in students:
-        average_grade = calculate_average(student["grades"])
-        average_grades.append(average_grade)
-    min_average_grade = min(average_grades)
+    min_average_grade = 101
+    min_index = -1
+    for index in range(len(students)):
+        average_grade = calculate_average(students[index]["grades"])
+        if average_grade < min_average_grade:
+            min_average_grade = average_grade
+            min_index = index
 
-    for index in range(len(average_grades)):
-        if average_grades[index] == min_average_grade:
-            print(f"\nСтудент {students[index]["name"]} удален.")
-            students.pop(index)
-            break
+    if min_index != -1:
+        print(f"\nСтудент {students[min_index]["name"]} удален.")
+        students.pop(min_index)
 
     update_average_grade(students)
 
